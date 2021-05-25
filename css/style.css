@@ -1,0 +1,166 @@
+body {
+    background-color: #F4F4F4;
+	margin: 0;
+}
+
+.nav-main {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	display: box;
+	width: 100%;
+	background-color: white;
+	border-bottom: 2px solid #111;
+	opacity: 50%;
+	z-index: 1000;
+}
+
+.nav-main ul {
+	margin: 8px 14px;
+    display: flex;
+	position: static;
+    flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	list-style-type: none;
+
+}
+
+.nav-main a {
+    display: block;
+    padding: 5px 20px;
+	margin: 5px 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #111;
+	border: 2px solid black;
+	border-radius: 12px;
+
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+.nav-main a:hover{
+    background-color: #F1F1F1;
+	border: 2px solid #7A00DF;
+	color: #7A00DF;
+ }
+ 
+.welcome {
+	position: relative;
+	display: box;
+	width: 100%;
+	height: 100%;
+}
+
+.welcome img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.welcome-intro {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+.welcome-intro-content {
+	font-family: sans-serif;
+	margin: 0x 30x;
+	padding: 0px 50px;
+	width: 350px;
+	text-align: left;
+	color: #ECECEC  ;
+	
+}
+
+.welcome-intro-content p {
+	font-size: 20px;
+}
+
+.welcome-intro-contact{
+	margin: 0x 30x;
+	padding: 0px 50px;
+	color: #ECECEC;
+}
+
+.welcome-intro-contact ul{
+	display: flex;
+	list-style-type:none;
+}
+
+.welcome-intro-contact a{
+	padding: 10px 10px;
+	margin-right: 20px;
+	font-size: 50px;
+	border: 2px solid #ECECEC;
+	border-radius: 12px;
+
+	color: #ECECEC;
+	text-decoration: none;
+}
+
+.main-content{
+	position: relative;
+	width: 100%;
+}
+
+.format-content{
+
+}
+
+.projects-content{
+	padding: 100px 100px;
+	text-align: left;
+	font-family: sans-serif;
+	color: #7A00DF;
+}
+
+.projects-container{
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+	
+}
+
+.projects-container figure{
+	position: relative;
+	margin: 50px 100px;
+	width: 300px;
+	height: 400px;
+	border: 3px solid #DDDDDD ;
+}
+
+.projects-container figure img{
+	width: 300px;
+	height: 200px;
+	object-fit: cover;
+}
+
+.projects-container figure figcaption{
+	padding: 10px 10px;
+	color: #666666
+}
+
+.about-content{
+	background: #8C00FF;
+	padding: 100px 100px;
+	text-align: left;
+	font-family: sans-serif;
+	color: white;
+}
+
+
+
+
+
+

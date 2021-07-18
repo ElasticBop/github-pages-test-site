@@ -109,6 +109,12 @@ body {
 	text-decoration: none;
 }
 
+.welcome-intro-contact a:hover{
+	background-color: #F1F1F1;
+	border: 2px solid #7A00DF;
+	color: #7A00DF;
+}
+
 .main-content{
 	position: relative;
 	width: 100%;

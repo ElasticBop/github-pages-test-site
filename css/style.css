@@ -158,19 +158,18 @@ body {
 }
 
 .about-content{
-	background: #8C00FF;
+
 	padding: 100px 100px;
 	text-align: left;
 	font-family: sans-serif;
-	color: white;
+	color: #7A00DF;
 }
 
-.contact-content{
-	padding: 100px 100px;
-	text-align: left;
-	font-family: sans-serif;
-	color: #8C00FF;
+.resume-content{
+	
 }
+
+
 
 
 

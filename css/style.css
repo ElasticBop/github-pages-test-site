@@ -1,3 +1,14 @@
+@keyframes fade-in {
+	from {opacity: 0%;}
+	to {opacity: 100%;}
+}
+
+.fade-animation {
+	animation: fade-in;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+}
+
 body {
     background-color: #F4F4F4;
 	margin: 0;
@@ -71,6 +82,8 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
+
+	opacity: 0%;
 }
 
 .welcome-intro-content {
@@ -132,7 +145,7 @@ body {
 	justify-content: center;
 }
 
-.projects-container figure{
+.projects-entry{
 	position: relative;
 	margin: 50px 100px;
 	width: 300px;
@@ -141,16 +154,17 @@ body {
 	border: 3px solid #DDDDDD ;
 	border-radius: 15px;
 	*/
+	opacity:0%;
 }
 
-.projects-container figure img{
+.projects-entry img{
 	width: 300px;
 	height: 200px;
 	object-fit: cover;
 	border-radius: 11px;
 }
 
-.projects-container figure figcaption{
+.projects-entry figcaption{
 	padding: 10px 10px;
 	color: #666666
 }

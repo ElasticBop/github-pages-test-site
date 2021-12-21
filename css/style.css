@@ -17,7 +17,7 @@ body {
 	opacity: 80%;
 }
 
-/* flexbox container */
+/* nav bar flexbox container */
 .nav-bar-flex {
 	display: flex;
 	flex-wrap: wrap;
@@ -25,7 +25,7 @@ body {
 	align-items: center;
 }
 
-/* items in the navbar */
+/* items in the navbar flex box */
 .nav-bar a{
 	padding: 0.33em 1.33em;
 	margin: 0.33em 0.66em;
@@ -33,7 +33,7 @@ body {
 	border-radius: 1em;
 
 	color: #111;
-    font-family: sans-serif;
+    font-family: monospace;
     font-size: 15px;
 	text-transform: uppercase;
     text-decoration: none;
@@ -74,7 +74,7 @@ body {
 }
 
 .welcome-intro-content {
-	font-family: sans-serif;
+	font-family: monospace;
 	margin: 0px 30px;
 	width: 350px;
 	text-align: left;
@@ -121,7 +121,7 @@ body {
 .format-title{
 	padding: 100px 100px;
 	text-align: center;
-	font-family: sans-serif;
+	font-family: monospace;
 	color: #7A00DF;
 }
 
@@ -137,8 +137,10 @@ body {
 	margin: 50px 100px;
 	width: 300px;
 	height: 400px;
+	/*
 	border: 3px solid #DDDDDD ;
 	border-radius: 15px;
+	*/
 }
 
 .projects-container figure img{

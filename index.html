@@ -3,7 +3,6 @@
 <html lang = "en">
     
 <head>
-   
     <meta charset="UTF-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1">
     <title>Resume</title>
@@ -13,12 +12,12 @@
 </head>
 
 <body>
-	<nav class = "nav-main">
-		<ul>
-		   <li><a href="#">Home</a></li>
-		   <li><a href="#projects">Projects</a></li>
-		   <li><a href="#resume">Resume</a></li>
-		</ul>
+	<nav class = "nav-bar">
+		<div class = "nav-bar-flex">
+		   <a href="#">Home</a>
+		   <a href="#projects">Projects</a>
+		   <a href="#resume">Resume</a>
+        </div>
 	</nav>
 	
 	<div class = "welcome">
@@ -28,7 +27,6 @@
 					<h1> <span>Jay</span> Park. </h1>
 					<p> Software developer looking for career in fullstack development. Adaptable and driven to improve. </p>
 				</div>
-				
 				<div class = "welcome-intro-contact">
 					<ul>
 						<li><a href="https://github.com/elasticbop" class = "fa fa-github" target = "_blank"></a></li>
@@ -41,12 +39,12 @@
 	</div>
 	
 	<div class = "main-content">
-		<div id = "projects" class = "projects-content format-content">
+		<div id = "projects" class = "format-title format-content">
 			<h1> Projects </h1>
 			<hr></hr>
 			<div class = "projects-container">
 				<figure>
-					<div class = "project-image"> 
+					<div class = "projects-image"> 
 						<img src = "images/project1.jpg" alt = "nope"> </img>
 					</div>
 					<figcaption>
@@ -62,14 +60,15 @@
 				</figure>
 			</div>
 		</div>
-		<div id = "resume" class = "about-content"> 
+		<!--
+		<div id = "resume" class = "format-title"> 
 			<h1> Resume </h2>
 			<hr></hr>
-			
 			<div class = "resume-content" >
 				<embed type = "text/pdf" src = "docs/Resume.pdf" width = "100%" height = "100%" >
 			</div>
 		</div>
+		-->
 	</div>
 	
 

@@ -75,8 +75,7 @@ body {
 
 .welcome-intro-content {
 	font-family: sans-serif;
-	margin: 0x 30x;
-	padding: 0px 50px;
+	margin: 0px 30px;
 	width: 350px;
 	text-align: left;
 	color: #ECECEC ;
@@ -93,7 +92,8 @@ body {
 .welcome-intro-contact ul{
 	display: flex;
 	flex-wrap: wrap;
-	list-style-type:none;
+	list-style-type: none;
+	padding: 0px;
 }
 
 .welcome-intro-contact a{

@@ -10,4 +10,4 @@ const observer = new IntersectionObserver(entries => {
 });
   
 observer.observe(document.querySelector('.welcome-intro'));
-observer.observe(document.querySelector('.projects-entry'));
+observer.observe(document.querySelector('.projects-container'));

@@ -1,3 +1,10 @@
+function removeLoadingCover() {
+    var cover = document.getElementById("loading-screen");
+    var content = document.getElementById("content");
+    cover.style.display = "none";
+    content.style.display = "block";
+}
+
 const observer = new IntersectionObserver(entries => {
     // Loop over the entries
     entries.forEach(entry => {

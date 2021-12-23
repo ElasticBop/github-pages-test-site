@@ -19,13 +19,14 @@ function addProject(project) {
     link.setAttribute("href", project.link);
     link.setAttribute("target", "_blank");
     link.setAttribute("class", "projects-entry-image-cover");
+    link.appendChild(document.createTextNode("View"));
     
     paragraph.appendChild(document.createTextNode(project.description));
 
     img.setAttribute("src", project.img);
     img.setAttribute("alt", "No Image Available");
 
-    container.setAttribute("class", "projects-entry fade-animation");
+    container.setAttribute("class", "projects-entry");
 
     img.appendChild(link);
     figure.appendChild(img);
@@ -37,28 +38,32 @@ function addProject(project) {
     document.getElementById("projects-container").appendChild(container);
 }
 
-function removeLoadingCover() {
+var observer; 
+function createObserver(){
+    observer = new IntersectionObserver(entries => {
+        // Loop over the entries
+        entries.forEach(entry => {
+            // If the element is visible
+            if (entry.isIntersecting) {
+            // Add the animation class
+                entry.target.classList.add('fade-animation');
+            }
+        });
+    });
+    document.querySelectorAll(".projects-entry").forEach((i) => {
+        if (i) {
+            observer.observe(i);
+        }
+    });
+    observer.observe(document.querySelector('.welcome-intro'));
+}
+
+function init() {
+    projects.forEach( addProject );
+    createObserver();
     var cover = document.getElementById("loading-screen");
     var content = document.getElementById("content");
     cover.style.display = "none";
     content.style.display = "block";
 }
 
-const observer = new IntersectionObserver(entries => {
-    // Loop over the entries
-    entries.forEach(entry => {
-        // If the element is visible
-        if (entry.isIntersecting) {
-        // Add the animation class
-            entry.target.classList.add('fade-animation');
-        }
-    });
-});
-
-
-document.querySelectorAll(".projects-entry").forEach((i) => {
-    if (i) {
-        observer.observe(i);
-    }
-});
-observer.observe(document.querySelector('.welcome-intro'));

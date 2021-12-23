@@ -59,7 +59,7 @@ function createObserver(){
 }
 
 function init() {
-    projects.forEach( addProject );
+    //projects.forEach( addProject );
     createObserver();
     var cover = document.getElementById("loading-screen");
     var content = document.getElementById("content");

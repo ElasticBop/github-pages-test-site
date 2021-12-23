@@ -15,6 +15,11 @@ const observer = new IntersectionObserver(entries => {
         }
     });
 });
-  
+
+
+document.querySelectorAll(".projects-entry").forEach((i) => {
+    if (i) {
+        observer.observe(i);
+    }
+});
 observer.observe(document.querySelector('.welcome-intro'));
-observer.observe(document.querySelector('.projects-container'));

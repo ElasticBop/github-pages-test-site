@@ -158,10 +158,14 @@ body {
 	flex-wrap: wrap;
 	flex-direction: row;
 	justify-content: center;
-	opacity:0%;
 }
 
+
 .projects-entry{
+	opacity: 0%;
+}
+
+.projects-entry figure{
 	position:relative;
 	margin: 50px 100px;
 	width: 300px;

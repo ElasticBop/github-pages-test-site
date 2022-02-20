@@ -1,11 +1,11 @@
 var projects = [{
     description : "Resume site built with raw HTML, CSS, and Javascript. This was my first attempt at building a website that includes responsive capabilities as well as animations. The project is WIP and will be expanded on in the future.",
     link : "https://github.com/elasticbop",
-    img : "./projects/images/project1.jpg"
+    img : "./projectInfo/images/project1.jpg"
 }, {
     description : "Second project",
     link : "https://github.com/elasticbop",
-    img : "./projects/images/project1.jpg"        
+    img : "./projectInfo/images/project1.jpg"        
 }];
 
 function addProject(project) {
@@ -59,10 +59,12 @@ function createObserver(){
 }
 
 function init() {
-    //projects.forEach( addProject );
+	//add projects to view
+    projects.forEach( addProject );
     createObserver();
     var cover = document.getElementById("loading-screen");
     var content = document.getElementById("content");
+	//remove loading display and reveal content
     cover.style.display = "none";
     content.style.display = "block";
 }

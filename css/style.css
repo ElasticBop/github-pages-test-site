@@ -141,7 +141,6 @@ body {
 	color: #ECECEC;
 	text-decoration: none;
 	
-	animation: ghost 2s ;
 
 	transition: 0.5s;
 }
@@ -150,7 +149,6 @@ body {
 	background-color: #F1F1F1;
 	border: 2px solid #7A00DF;
 	color: #7A00DF;
-	animation:none;
 }
 
 .main-content{

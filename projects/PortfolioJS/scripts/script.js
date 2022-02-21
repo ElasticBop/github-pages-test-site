@@ -8,6 +8,7 @@ var projects = [{
     img : "./projectInfo/images/project1.jpg"        
 }];
 
+//create elements using project data and add to DOM
 function addProject(project) {
     var link = document.createElement("a");
     var paragraph = document.createElement("p");
@@ -28,8 +29,8 @@ function addProject(project) {
 
     container.setAttribute("class", "projects-entry");
 
-    img.appendChild(link);
     figure.appendChild(img);
+	figure.appendChild(link);
 
     figcaption.appendChild(paragraph);
     figure.appendChild(figcaption);

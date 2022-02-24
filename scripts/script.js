@@ -1,14 +1,13 @@
 var projects = [{
     description : "Resume site built with raw HTML, CSS, and Javascript. This was my first attempt at building a website that includes responsive capabilities as well as animations. The project is WIP and will be expanded on in the future.",
     link : "https://github.com/elasticbop",
-    img : "./projectInfo/images/project1.jpg"
+    img : "./projects/images/project1.jpg"
 }, {
     description : "Second project",
     link : "https://github.com/elasticbop",
-    img : "./projectInfo/images/project1.jpg"        
+    img : "./projects/images/project1.jpg"        
 }];
 
-//create elements using project data and add to DOM
 function addProject(project) {
     var link = document.createElement("a");
     var paragraph = document.createElement("p");
@@ -29,8 +28,8 @@ function addProject(project) {
 
     container.setAttribute("class", "projects-entry");
 
+    img.appendChild(link);
     figure.appendChild(img);
-	figure.appendChild(link);
 
     figcaption.appendChild(paragraph);
     figure.appendChild(figcaption);
@@ -60,12 +59,10 @@ function createObserver(){
 }
 
 function init() {
-	//add projects to view
-    projects.forEach( addProject );
+    //projects.forEach( addProject );
     createObserver();
     var cover = document.getElementById("loading-screen");
     var content = document.getElementById("content");
-	//remove loading display and reveal content
     cover.style.display = "none";
     content.style.display = "block";
 }

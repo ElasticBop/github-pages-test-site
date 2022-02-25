@@ -19,6 +19,7 @@ window.onload = () => {
     console.log(gInfo.endLoc);
 }
 
+/*
 window.onresize = () => {
     updateGraphView(gInfo);
     updateGraph(gInfo)
@@ -26,6 +27,7 @@ window.onresize = () => {
     console.log(gInfo.endLoc);
 
 }
+*/
 
 //remove or add cells based on new window size
 function updateGraphView(gInfo){
@@ -143,70 +145,35 @@ function updateGraph(gInfo){
     for(let i = 0; i < gInfo.rows; i++ ){
         newGraph[i] = new Array(gInfo.cols);
         for( let j = 0; j < gInfo.cols; j++ ){
-            newGraph[i][j] = gInfo.graph[i][j];
+            if(gInfo.graph[i][j] == null){
+                newGraph[i][j] = 0;
+            }
+            else{
+                newGraph[i][j] = gInfo.graph[i][j];
+            }
         }
     }
-
     if( gInfo.startLoc != 0){
         if(gInfo.startLoc[0] >= gInfo.rows || gInfo.startLoc[1] >= gInfo.cols){
             gInfo.startLoc = 0;
         }
     }
-
     if( gInfo.endLoc != 0){
         if(gInfo.endLoc[0] >= gInfo.rows || gInfo.endLoc[1] >= gInfo.cols){
             gInfo.endLoc = 0;
         }
     }
-
     gInfo.graph = newGraph;
 }
 
 //change the color of the cell on Click
 function cellOnClick(e){
     let cellLoc = e.target.id;
-    let cell = document.getElementById(cellLoc);
     cellLoc = cellLoc.split("-");
     let x = parseInt(cellLoc[0]);
     let y = parseInt(cellLoc[1]);
 
-    //can simplify this damn
-    if( settings.nodeType == 0){
-        gInfo.graph[x][y] = 1;
-        cell.style.backgroundColor = "green";
-        if (gInfo.startLoc != 0){
-            if( x != gInfo.startLoc[0] || y != gInfo.startLoc[1] ){
-                gInfo.graph[gInfo.startLoc[0]][gInfo.startLoc[1]] = 0;
-                let oldCell = document.getElementById(gInfo.startLoc[0] + "-" + gInfo.startLoc[1]);
-                oldCell.style.backgroundColor = "";
-            }
-        }
-        gInfo.startLoc = [x,y];
-    }
-    else if( settings.nodeType == 1){
-        gInfo.graph[x][y] = 2;
-        cell.style.backgroundColor = "red";
-        if (gInfo.endLoc != 0){
-            if( x != gInfo.endLoc[0] || y != gInfo.endLoc[1] ){
-                gInfo.graph[gInfo.endLoc[0]][gInfo.endLoc[1]] = 0;
-                let oldCell = document.getElementById(gInfo.endLoc[0] + "-" + gInfo.endLoc[1]);
-                oldCell.style.backgroundColor = "";        
-            }
-        }
-        gInfo.endLoc = [x,y];
-    }
-    else{
-        if( gInfo.graph[x][y] != 2 && gInfo.graph[x][y] != 1) {
-            if( gInfo.graph[x][y] == 3){
-                cell.style.backgroundColor = "";
-                gInfo.graph[x][y] = 0;
-            }
-            else{
-                cell.style.backgroundColor = "black";
-                gInfo.graph[x][y] = 3;
-            }   
-        }    
-    }
+    pathfindingChangeNode(gInfo, x, y);
     console.log(gInfo.graph);
 }
 
@@ -216,6 +183,57 @@ function selectOnChange(e){
     }
     else if (e.target.id == "alg-select"){
         settings.algType = e.target.options.selectedIndex;
+    }
+}
+
+function pathfindingChangeNode( gInfo, x, y){
+    if( settings.nodeType == 0){
+        updateStartNode(x, y);
+        changeNode(gInfo, x, y, "green", settings.nodeType);
+    }
+    else if( settings.nodeType == 1){
+        updateEndNode(x, y);
+        changeNode(gInfo, x, y, "red", settings.nodeType);
+    }
+    else{
+        changeNode(gInfo, x, y, "black", settings.nodeType);
+    }
+}
+
+//change the node in both the graph and view at specified location with color and node Type
+function changeNode(gInfo, x, y, color, nodeType){
+    let cell = document.getElementById(x + "-" + y);
+    if( gInfo.graph[x][y] == nodeType+1){
+        cell.style.backgroundColor = "";
+        gInfo.graph[x][y] = 0;
+    }
+    else if( gInfo.graph[x][y] == 0 ) {
+        cell.style.backgroundColor = color;
+        gInfo.graph[x][y] = nodeType+1;
+    }  
+}
+
+//call this to update the start node
+function updateStartNode(x, y){
+    if(gInfo.startLoc != 0){
+        gInfo.graph[gInfo.startLoc[0]][gInfo.startLoc[1]] = 0
+        let oldCell = document.getElementById(gInfo.startLoc[0] + "-" + gInfo.startLoc[1]);
+        oldCell.style.backgroundColor = "";
+    }
+
+    if( gInfo.graph[x][y] == 0 ){
+        gInfo.startLoc = [x,y];
+    }
+}
+
+function updateEndNode(x, y){
+    if(gInfo.endLoc != 0){
+        gInfo.graph[gInfo.endLoc[0]][gInfo.endLoc[1]] = 0
+        let oldCell = document.getElementById(gInfo.endLoc[0] + "-" + gInfo.endLoc[1]);
+        oldCell.style.backgroundColor = "";
+    }
+    if( gInfo.graph[x][y] == 0 ){
+        gInfo.endLoc = [x,y];
     }
 }
 

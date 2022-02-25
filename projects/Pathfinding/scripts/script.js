@@ -174,7 +174,9 @@ function cellOnClick(e){
     let y = parseInt(cellLoc[1]);
 
     pathfindingChangeNode(gInfo, x, y);
-    console.log(gInfo.graph);
+    //console.log(gInfo.graph);
+    console.log(gInfo.startLoc);
+    console.log(gInfo.endLoc);
 }
 
 function selectOnChange(e){
@@ -215,25 +217,30 @@ function changeNode(gInfo, x, y, color, nodeType){
 
 //call this to update the start node
 function updateStartNode(x, y){
-    if(gInfo.startLoc != 0){
+    if(gInfo.startLoc != 0 && gInfo.graph[x][y] == 0){
         gInfo.graph[gInfo.startLoc[0]][gInfo.startLoc[1]] = 0
         let oldCell = document.getElementById(gInfo.startLoc[0] + "-" + gInfo.startLoc[1]);
         oldCell.style.backgroundColor = "";
     }
-
     if( gInfo.graph[x][y] == 0 ){
         gInfo.startLoc = [x,y];
+    }
+    else if(x == gInfo.startLoc[0] && y == gInfo.startLoc[1]){
+        gInfo.startLoc = 0;
     }
 }
 
 function updateEndNode(x, y){
-    if(gInfo.endLoc != 0){
+    if(gInfo.endLoc != 0 && gInfo.graph[x][y] == 0){
         gInfo.graph[gInfo.endLoc[0]][gInfo.endLoc[1]] = 0
         let oldCell = document.getElementById(gInfo.endLoc[0] + "-" + gInfo.endLoc[1]);
         oldCell.style.backgroundColor = "";
     }
     if( gInfo.graph[x][y] == 0 ){
         gInfo.endLoc = [x,y];
+    }
+    else if(x == gInfo.endLoc[0] && y == gInfo.endLoc[1]){
+        gInfo.endLoc = 0;
     }
 }
 

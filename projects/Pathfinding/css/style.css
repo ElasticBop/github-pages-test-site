@@ -1,0 +1,20 @@
+@keyframes fade-in {
+	from {opacity: 0%;}
+	to {opacity: 100%;}
+}
+
+body{
+	margin: 0;
+}
+
+#nc{
+	display:grid;
+	grid-auto-rows: 3vw;
+}
+
+.cell {
+	color: black;
+	border-style: solid;
+	user-select:none;
+	transition: 0.5s;
+}

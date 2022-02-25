@@ -174,9 +174,9 @@ function cellOnClick(e){
     let y = parseInt(cellLoc[1]);
 
     pathfindingChangeNode(gInfo, x, y);
-    //console.log(gInfo.graph);
-    console.log(gInfo.startLoc);
-    console.log(gInfo.endLoc);
+    console.log(gInfo.graph);
+    //console.log(gInfo.startLoc);
+    //console.log(gInfo.endLoc);
 }
 
 function selectOnChange(e){

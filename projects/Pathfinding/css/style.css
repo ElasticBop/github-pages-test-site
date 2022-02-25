@@ -7,9 +7,20 @@ body{
 	margin: 0;
 }
 
+#s-bar{
+	display:flex;
+	align-items: center;
+	justify-content:center;
+	flex-wrap: wrap;
+}
+
+
 #nc{
 	display:grid;
-	grid-auto-rows: 3vw;
+	justify-content: center;
+	justify-items: center;
+	align-content: center;;
+	align-items: center;
 }
 
 .cell {
@@ -17,4 +28,12 @@ body{
 	border-style: solid;
 	user-select:none;
 	transition: 0.5s;
+	width: 35px;
+	height: 35px;
+}
+
+.s-bar-item{
+	color: black;
+	margin: 15px;
+	padding: 15px;
 }

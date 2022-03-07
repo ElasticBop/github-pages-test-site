@@ -1,9 +1,11 @@
+
 let gInfo = {
     rows: 20,
     cols: 40,
     cellSize: 35,
     startLoc: 0,
-    endLoc: 0
+    endLoc: 0,
+    graph: 0
 };
 
 let settings = {
@@ -11,88 +13,14 @@ let settings = {
     algType: 0
 };
 
+
 window.onload = () => {
     setUpHandlers();
     setUpGraphView(gInfo);
     setUpGraph(gInfo);
-    console.log(gInfo.startLoc);
-    console.log(gInfo.endLoc);
 }
 
-/*
-window.onresize = () => {
-    updateGraphView(gInfo);
-    updateGraph(gInfo)
-    console.log(gInfo.startLoc);
-    console.log(gInfo.endLoc);
-
-}
-*/
-
-//remove or add cells based on new window size
-function updateGraphView(gInfo){
-    let rows = gInfo.rows;
-    let cols = gInfo.cols;
-    let cellSize = gInfo.cellSize;
-
-    let nc = document.getElementById("nc");
-
-    //calculate the number of column and row cells
-    let newRows = Math.floor(window.innerHeight/cellSize*0.8);
-    let newCols = Math.floor(window.innerWidth/cellSize*0.8);
-
-    //adjust grid layout based on number of cols and rows
-    nc.style.gridTemplateColumns = "repeat(" + newCols + "," + cellSize + "px)";
-    nc.style.gridAutoRows = cellSize + "px";
-
-    //find the the difference between number old and new cells
-    let rowCellChange = newRows-rows;
-    let colCellChange = newCols-cols;
-
-    //start by removing/adding rows
-    if( rowCellChange < 0 ){
-        for(let i = newRows; i < rows; i++ ){
-            for( let j = 0; j < cols; j++ ){
-                document.getElementById(i + "-" + j).remove();
-            }
-        }
-    }
-    else{
-        for(let i = rows; i < newRows; i++ ){
-            for( let j = 0; j < cols; j++ ){
-                let cell = document.createElement("div");
-                cell.setAttribute("id", i + "-" + j);
-                cell.setAttribute("class", "cell");
-                cell.addEventListener("mousedown", cellOnClick);
-                nc.appendChild(cell);
-            }
-        }
-    }
-
-    //change columns after rows
-    if( colCellChange < 0 ){
-        for(let j = newCols; j < cols; j++ ){
-            for( let i = 0; i < newRows; i++ ){
-                document.getElementById(i + "-" + j).remove();
-            }
-        }
-    }
-    else{
-        for(let j = cols; j < newCols; j++ ){
-            for( let i = 0; i < newRows; i++ ){
-                let cell = document.createElement("div");
-                cell.setAttribute("id", i + "-" + j);
-                cell.setAttribute("class", "cell");
-                cell.addEventListener("mousedown", cellOnClick);
-                nc.appendChild(cell);
-            }
-        }
-    }
-    gInfo.rows = newRows;
-    gInfo.cols = newCols;
-}
-
-//setup the board
+//setup the graph UI
 function setUpGraphView(gInfo){
     let rows = gInfo.rows;
     let cols = gInfo.cols;
@@ -122,7 +50,7 @@ function setUpGraphView(gInfo){
     gInfo.cols = cols;
 }
 
-//set up graph matrix
+//set up the model of the graph
 function setUpGraph(gInfo){
     gInfo.graph = new Array(gInfo.rows);
     for(let i = 0; i < gInfo.rows; i++ ){
@@ -133,37 +61,11 @@ function setUpGraph(gInfo){
     }
 }
 
+//assign handlers to different buttons
 function setUpHandlers(){
     document.getElementById("node-select").addEventListener("change", selectOnChange);
     document.getElementById("alg-select").addEventListener("change", selectOnChange);
-    
-}
-
-//update graph matrix
-function updateGraph(gInfo){
-    newGraph = new Array(gInfo.rows);
-    for(let i = 0; i < gInfo.rows; i++ ){
-        newGraph[i] = new Array(gInfo.cols);
-        for( let j = 0; j < gInfo.cols; j++ ){
-            if(gInfo.graph[i][j] == null){
-                newGraph[i][j] = 0;
-            }
-            else{
-                newGraph[i][j] = gInfo.graph[i][j];
-            }
-        }
-    }
-    if( gInfo.startLoc != 0){
-        if(gInfo.startLoc[0] >= gInfo.rows || gInfo.startLoc[1] >= gInfo.cols){
-            gInfo.startLoc = 0;
-        }
-    }
-    if( gInfo.endLoc != 0){
-        if(gInfo.endLoc[0] >= gInfo.rows || gInfo.endLoc[1] >= gInfo.cols){
-            gInfo.endLoc = 0;
-        }
-    }
-    gInfo.graph = newGraph;
+    document.getElementById("start-button").addEventListener("click", startOnClick);
 }
 
 //change the color of the cell on Click
@@ -188,13 +90,22 @@ function selectOnChange(e){
     }
 }
 
+function startOnClick(){
+    if( gInfo.startLoc == 0 || gInfo.endLoc == 0){
+        alert("Set up start and end nodes");
+    }
+    else{
+        console.log(aStar(gInfo));
+    }
+}
+
 function pathfindingChangeNode( gInfo, x, y){
     if( settings.nodeType == 0){
-        updateStartNode(x, y);
+        updateStartNode(gInfo, x, y);
         changeNode(gInfo, x, y, "green", settings.nodeType);
     }
     else if( settings.nodeType == 1){
-        updateEndNode(x, y);
+        updateEndNode(gInfo, x, y);
         changeNode(gInfo, x, y, "red", settings.nodeType);
     }
     else{
@@ -215,8 +126,8 @@ function changeNode(gInfo, x, y, color, nodeType){
     }  
 }
 
-//call this to update the start node
-function updateStartNode(x, y){
+//call this to update the start node with the new x and y location
+function updateStartNode(gInfo, x, y){
     if(gInfo.startLoc != 0 && gInfo.graph[x][y] == 0){
         gInfo.graph[gInfo.startLoc[0]][gInfo.startLoc[1]] = 0
         let oldCell = document.getElementById(gInfo.startLoc[0] + "-" + gInfo.startLoc[1]);
@@ -230,7 +141,7 @@ function updateStartNode(x, y){
     }
 }
 
-function updateEndNode(x, y){
+function updateEndNode(gInfo, x, y){
     if(gInfo.endLoc != 0 && gInfo.graph[x][y] == 0){
         gInfo.graph[gInfo.endLoc[0]][gInfo.endLoc[1]] = 0
         let oldCell = document.getElementById(gInfo.endLoc[0] + "-" + gInfo.endLoc[1]);
@@ -241,6 +152,76 @@ function updateEndNode(x, y){
     }
     else if(x == gInfo.endLoc[0] && y == gInfo.endLoc[1]){
         gInfo.endLoc = 0;
+    }
+}
+
+//manhattan distance
+function mD( loc1, loc2){
+    return Math.abs(loc2[1]-loc1[1]) + Math.abs(loc2[0]-loc1[0]);
+}
+
+
+//create new neighbors
+function getNeighbors(gInfo, r, c, emptyType = 0){
+    let validR = [];
+    let validC = [];
+    let result = [];
+    if( r+1 <= gInfo.rows-1 && gInfo.graph[r+1][c] == emptyType){
+        validR.push(r+1);
+    }
+    if( r-1 >= 0 && gInfo.graph[r-1][c] == emptyType ){
+        validR.push(r-1);
+    }
+    if( c+1 <= gInfo.cols-1 && gInfo.graph[r][c+1] == emptyType){
+        validC.push(c+1);
+    }
+    if( c-1 >= 0 && gInfo.graph[r][c-1] == emptyType){
+        validC.push(c-1);
+    }
+
+    for( let i = 0; i < validR.length; i++ ){
+        result.push(new Node([validR[i], c]));
+    } 
+    for( let i = 0; i < validC.length; i++ ){
+        result.push(new Node([r ,validC[i]]));
+    } 
+    return result;
+}
+
+function Node(loc){
+    this.g = 0;
+    this.f = 0;
+    this.loc = loc;
+    this.parent = null;
+    this.valid = true;
+}
+
+function locCompare(n1, n2){
+    return (n1[0] == n2[0]) && (n1[1] == n2[1]);
+}
+
+//can use heap for the openList to improve time to search for min element
+function aStar(gInfo){
+    alert("pain");
+}
+
+function removeMinNode(list){
+    if( list.length == 0 ){
+        return null;
+    }
+    else if( list.length == 1){
+        let result = list.splice(0, 1);
+        return result[0];
+    }
+    else{
+        let minIndex = 0;
+        for( let i = 1; i < list.length; i++ ){
+            if( list[i].f < list[minIndex].f ){
+                minIndex = i;
+            }
+        }
+        let result = list.splice(minIndex, 1);
+        return result[0]; 
     }
 }
 

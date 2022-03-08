@@ -107,10 +107,22 @@ function startOnClick(){
         alert("Set up start and end nodes");
     }
     else{
-        console.log(aStar(gInfo));
+        let result = aStar(gInfo);
+        displayPath(result);
         disableHandlers();
     }
     
+}
+
+function displayPath(result){
+    if( result != undefined){
+        while( result.parent != null){
+            console.log("test");
+            changeNode(gInfo, result.loc[0], result.loc[1], "blue", 4);
+            result = result.parent;
+            console.log(result);
+        }
+    }
 }
 
 function pathfindingChangeNode( gInfo, x, y){
@@ -134,7 +146,7 @@ function changeNode(gInfo, x, y, color, nodeType){
         cell.style.backgroundColor = "";
         gInfo.graph[x][y] = 0;
     }
-    else if( gInfo.graph[x][y] == 0 ) {
+    else if( gInfo.graph[x][y] == 0 || gInfo.graph[x][y] == 4 ) {
         cell.style.backgroundColor = color;
         gInfo.graph[x][y] = nodeType+1;
     }  
@@ -284,7 +296,7 @@ function aStar(gInfo){
             if(betterFCost || !found){
                 neighbors[i].g = nGCost;
                 neighbors[i].f = nFCost;
-                neighbors[i].parent = current.loc;
+                neighbors[i].parent = current;
                 openList.push(neighbors[i]);
                 changeNode(gInfo, neighbors[i].loc[0], neighbors[i].loc[1], "yellow", 3);
             }

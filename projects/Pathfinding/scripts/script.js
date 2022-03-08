@@ -10,8 +10,7 @@ let gInfo = {
 
 let settings = {
     nodeType: 0,
-    algType: 0,
-    execNum: 0
+    algType: 0
 };
 
 
@@ -70,6 +69,18 @@ function setUpHandlers(){
     document.getElementById("start-button").addEventListener("click", startOnClick);
 }
 
+function disableHandlers(){
+    document.getElementById("node-select").removeEventListener("change", selectOnChange);
+    document.getElementById("alg-select").removeEventListener("change", selectOnChange);
+    document.getElementById("start-button").removeEventListener("click", startOnClick); 
+    for(let i = 0; i < gInfo.rows; i++){
+        for( let j = 0; j < gInfo.cols; j++ ){
+            let cell = document.getElementById(i + "-" + j);
+            cell.removeEventListener("mousedown", cellOnClick);
+        }
+    }
+}
+
 //change the color of the cell on Click
 function cellOnClick(e){
     let cellLoc = e.target.id;
@@ -78,7 +89,6 @@ function cellOnClick(e){
     let y = parseInt(cellLoc[1]);
 
     pathfindingChangeNode(gInfo, x, y);
-    console.log(gInfo.graph);
     //console.log(gInfo.startLoc);
     //console.log(gInfo.endLoc);
 }
@@ -93,22 +103,14 @@ function selectOnChange(e){
 }
 
 function startOnClick(){
-    if( settings.execNum > 0){
-        endLoc = gInfo.endLoc;
-        startLoc = gInfo.startLoc;
-        setUpGraphView(gInfo);
-        setUpGraph(gInfo);
-        changeNode(gInfo, endLoc[0], endLoc[1], "red", 1)
-        changeNode(gInfo, startLoc[0], startLoc[1], "green", 0)
-
-    }
     if( gInfo.startLoc == 0 || gInfo.endLoc == 0){
         alert("Set up start and end nodes");
     }
     else{
-        settings.execNum++;
         console.log(aStar(gInfo));
+        disableHandlers();
     }
+    
 }
 
 function pathfindingChangeNode( gInfo, x, y){
@@ -214,8 +216,6 @@ function locCompare(n1, n2){
 
 //can use heap for the openList to improve time to search for min element
 function aStar(gInfo){
-    console.log(gInfo.startLoc);
-    console.log(gInfo.endLoc);
 
     let closedList = [];
     let openList = [];

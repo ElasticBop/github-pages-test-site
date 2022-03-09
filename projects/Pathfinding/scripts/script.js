@@ -67,6 +67,7 @@ function setUpHandlers(){
     document.getElementById("node-select").addEventListener("change", selectOnChange);
     document.getElementById("alg-select").addEventListener("change", selectOnChange);
     document.getElementById("start-button").addEventListener("click", startOnClick);
+    document.getElementById("reset-button").addEventListener("click", resetOnClick);
 }
 
 function disableHandlers(){
@@ -107,20 +108,38 @@ function startOnClick(){
         alert("Set up start and end nodes");
     }
     else{
-        let result = aStar(gInfo);
+        let result = null;
+        switch( settings.algType ){
+            case 0:
+                result = aStar(gInfo);
+                console.log("a");
+                break;
+            case 1:
+                result = uCost(gInfo);
+                console.log("u");
+
+                break;
+            case 2:
+                result = greedy(gInfo);
+                console.log("g");
+
+                break;
+        }
         displayPath(result);
         disableHandlers();
     }
     
 }
 
+function resetOnClick(){
+    window.location.reload();
+}
+
 function displayPath(result){
     if( result != undefined){
         while( result.parent != null){
-            console.log("test");
             changeNode(gInfo, result.loc[0], result.loc[1], "blue", 4);
             result = result.parent;
-            console.log(result);
         }
     }
 }
@@ -217,6 +236,7 @@ function getNeighbors(gInfo, r, c, emptyType = 0, endType = 2){
 function Node(loc){
     this.g = 0;
     this.f = 0;
+    this.h = 0;
     this.loc = loc;
     this.parent = null;
     this.valid = true;
@@ -224,6 +244,26 @@ function Node(loc){
 
 function locCompare(n1, n2){
     return (n1[0] == n2[0]) && (n1[1] == n2[1]);
+}
+
+function removeMinNode(list){
+    if( list.length == 0 ){
+        return null;
+    }
+    else if( list.length == 1){
+        let result = list.splice(0, 1);
+        return result[0];
+    }
+    else{
+        let minIndex = 0;
+        for( let i = 1; i < list.length; i++ ){
+            if( list[i].f < list[minIndex].f ){
+                minIndex = i;
+            }
+        }
+        let result = list.splice(minIndex, 1);
+        return result[0]; 
+    }
 }
 
 //can use heap for the openList to improve time to search for min element
@@ -270,7 +310,8 @@ function aStar(gInfo){
 
         for( let i = 0; i < neighbors.length; i++){
             let nGCost = current.g + 1;
-            let nFCost = nGCost + mD(neighbors[i].loc, gInfo.endLoc);
+            let nHCost = mD(neighbors[i].loc, gInfo.endLoc);
+            let nFCost = nGCost + nHCost;
            
             //check if element is in closed list with the location of the current neighbor, skip if it is
             let found = (undefined != closedList.find( e => locCompare(e.loc, neighbors[i].loc)) );
@@ -279,7 +320,7 @@ function aStar(gInfo){
             }
 
             //check if the current neighbor is already in the openList and if it is, update the path and cost if the current node has a better fcost
-            let betterFCost = false;
+            let betterCost = false;
             for(node in openList){
                 if (node == 0){
                     break;
@@ -288,14 +329,15 @@ function aStar(gInfo){
                 found = locCompare(node.loc, neighbors[i].loc);
                 if( found && node.f > nFCost){
                     node.valid = false;
-                    betterFCost = true;
+                    betterCost = true;
                     break;
                 }
             }
             
-            if(betterFCost || !found){
+            if(betterCost || !found){
                 neighbors[i].g = nGCost;
                 neighbors[i].f = nFCost;
+                neighbors[i].h = nHCost;
                 neighbors[i].parent = current;
                 openList.push(neighbors[i]);
                 changeNode(gInfo, neighbors[i].loc[0], neighbors[i].loc[1], "yellow", 3);
@@ -305,23 +347,162 @@ function aStar(gInfo){
 
 }
 
-function removeMinNode(list){
-    if( list.length == 0 ){
-        return null;
-    }
-    else if( list.length == 1){
-        let result = list.splice(0, 1);
-        return result[0];
-    }
-    else{
-        let minIndex = 0;
-        for( let i = 1; i < list.length; i++ ){
-            if( list[i].f < list[minIndex].f ){
-                minIndex = i;
+function uCost(gInfo){
+
+    let closedList = [];
+    let openList = [];
+    let result = null;
+    
+    openList.push( new Node(gInfo.startLoc) );
+
+
+    let exit = false;
+
+    //openList.length > 0
+    while( openList.length > 0){
+        let current = removeMinNode(openList);
+        //console.log( "Current node " + current.loc[0] + "-", current.loc[1]);
+        //console.log("Current node is " + current.valid);
+        
+        //check if the node that was removed is valid, otherwise continue removing
+        while (!current.valid){
+            if (openList.length == 0){
+                exit = true;
+                break;
+            }
+            current = removeMinNode(openList);
+        }    
+        if(exit){
+            return result;
+        }   
+        
+        //add the current node to the closed list
+        closedList.push(current);
+        
+        //check to see if we have reached the end
+        if( locCompare(current.loc, gInfo.endLoc) ){
+            result = current;
+            return result;
+        }
+
+        //create neighbors of the current node
+        neighbors = getNeighbors(gInfo, current.loc[0], current.loc[1]);
+
+        for( let i = 0; i < neighbors.length; i++){
+            let nGCost = current.g + 1;
+            let nHCost = mD(neighbors[i].loc, gInfo.endLoc);
+            let nFCost = nGCost + nHCost;
+           
+            //check if element is in closed list with the location of the current neighbor, skip if it is
+            let found = (undefined != closedList.find( e => locCompare(e.loc, neighbors[i].loc)) );
+            if ( found ){
+                continue;
+            }
+
+            //check if the current neighbor is already in the openList and if it is, update the path and cost if the current node has a better fcost
+            let betterCost = false;
+            for(node in openList){
+                if (node == 0){
+                    break;
+                }
+                
+                found = locCompare(node.loc, neighbors[i].loc);
+                if( found && node.g > nGCost){
+                    node.valid = false;
+                    betterCost = true;
+                    break;
+                }
+            }
+            
+            if(betterCost || !found){
+                neighbors[i].g = nGCost;
+                neighbors[i].f = nFCost;
+                neighbors[i].h = nHCost;
+                neighbors[i].parent = current;
+                openList.push(neighbors[i]);
+                changeNode(gInfo, neighbors[i].loc[0], neighbors[i].loc[1], "yellow", 3);
             }
         }
-        let result = list.splice(minIndex, 1);
-        return result[0]; 
     }
+
 }
 
+function greedy(gInfo){
+
+    let closedList = [];
+    let openList = [];
+    let result = null;
+    
+    openList.push( new Node(gInfo.startLoc) );
+
+
+    let exit = false;
+
+    //openList.length > 0
+    while( openList.length > 0){
+        let current = removeMinNode(openList);
+        //console.log( "Current node " + current.loc[0] + "-", current.loc[1]);
+        //console.log("Current node is " + current.valid);
+        
+        //check if the node that was removed is valid, otherwise continue removing
+        while (!current.valid){
+            if (openList.length == 0){
+                exit = true;
+                break;
+            }
+            current = removeMinNode(openList);
+        }    
+        if(exit){
+            return result;
+        }   
+        
+        //add the current node to the closed list
+        closedList.push(current);
+        
+        //check to see if we have reached the end
+        if( locCompare(current.loc, gInfo.endLoc) ){
+            result = current;
+            return result;
+        }
+
+        //create neighbors of the current node
+        neighbors = getNeighbors(gInfo, current.loc[0], current.loc[1]);
+
+        for( let i = 0; i < neighbors.length; i++){
+            let nGCost = current.g + 1;
+            let nHCost = mD(neighbors[i].loc, gInfo.endLoc);
+            let nFCost = nGCost + nHCost;
+           
+            //check if element is in closed list with the location of the current neighbor, skip if it is
+            let found = (undefined != closedList.find( e => locCompare(e.loc, neighbors[i].loc)) );
+            if ( found ){
+                continue;
+            }
+
+            //check if the current neighbor is already in the openList and if it is, update the path and cost if the current node has a better fcost
+            let betterCost = false;
+            for(node in openList){
+                if (node == 0){
+                    break;
+                }
+                
+                found = locCompare(node.loc, neighbors[i].loc);
+                if( found && node.h > nHCost){
+                    node.valid = false;
+                    betterCost = true;
+                    break;
+                }
+            }
+            
+            if(betterCost || !found){
+                neighbors[i].g = nGCost;
+                neighbors[i].f = nFCost;
+                neighbors[i].h = nHCost;
+                neighbors[i].parent = current;
+                openList.push(neighbors[i]);
+                changeNode(gInfo, neighbors[i].loc[0], neighbors[i].loc[1], "yellow", 3);
+            }
+        }
+    }
+
+}

@@ -122,13 +122,12 @@ function startOnClick(){
             case 2:
                 result = greedy(gInfo);
                 console.log("g");
-
                 break;
         }
         displayPath(result);
         disableHandlers();
     }
-    
+        
 }
 
 function resetOnClick(){

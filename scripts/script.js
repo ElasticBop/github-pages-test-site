@@ -1,11 +1,11 @@
 var projects = [{
-    description : "Resume site built with raw HTML, CSS, and Javascript. This was my first attempt at building a website that includes responsive capabilities as well as animations. The project is WIP and will be expanded on in the future.",
+    description : "Portfolio to store  my current and future projects. Built using HTML, CSS, and Javascript.",
     link : "https://github.com/elasticbop",
-    img : "./projectInfo/images/project1.jpg"
+    img : "./images/project1.jpg"
 }, {
-    description : "Second project",
-    link : "https://github.com/elasticbop",
-    img : "./projectInfo/images/project1.jpg"        
+    description : "Visualization of the A-star pathfinding algorithm using the manhattan distance as a metric. Built using HTML, CSS, and Javascript",
+    link : "https://github.com/elasticbop/Pathfinding/index.html",
+    img : "./images/pathfinding.PNG"        
 },];
 
 //create elements using project data and add to DOM

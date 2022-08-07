@@ -1,5 +1,5 @@
 var projects = [{
-    description : "Resume site built with raw HTML, CSS, and Javascript. This was my first attempt at building a website that includes responsive capabilities as well as animations. The project is WIP and will be expanded on in the future.",
+    description : "A website to store and view the projects I create. Built using HTML, CSS, and Javascript",
     link : "https://github.com/elasticbop",
     img : "./projects/images/project1.jpg"
 }, {

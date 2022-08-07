@@ -6,7 +6,7 @@ var projects = [{
     description : "Second project",
     link : "https://github.com/elasticbop",
     img : "./projectInfo/images/project1.jpg"        
-}];
+},];
 
 //create elements using project data and add to DOM
 function addProject(project) {

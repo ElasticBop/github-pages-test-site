@@ -4,7 +4,7 @@ var projects = [{
     img : "./images/project1.jpg"
 }, {
     description : "Visualization of the A-star pathfinding algorithm using the manhattan distance as a metric. Built using HTML, CSS, and Javascript",
-    link : "https://github.com/elasticbop/Pathfinding/index.html",
+    link : "https://github.com/elasticbop/projects/Pathfinding/index.html",
     img : "./images/pathfinding.PNG"        
 },];
 

@@ -9,7 +9,7 @@ let gInfo = {
     graph: 0
 };
 
-//a configuration object denoting the current nodeType and algType
+//a configuration object denoting the current nodeType and algorithmType
 let settings = {
     nodeType: 0,
     algType: 0
@@ -20,10 +20,10 @@ let settings = {
 window.onload = () => {
     setUpHandlers();
     setUpGraphView(gInfo);
-    setUpGraph(gInfo);
+    setUpGraphModel(gInfo);
 }
 
-//setup the graph UI
+//setup the graph UI based on the graph model
 function setUpGraphView(gInfo){
     let rows = gInfo.rows;
     let cols = gInfo.cols;
@@ -31,7 +31,7 @@ function setUpGraphView(gInfo){
     let nc = document.getElementById("nc");
     nc.innerHTML = "";
 
-    //calculate the number of column and row cells
+    //calculate the number of column and row cells from window size
     rows = Math.floor(window.innerHeight/cellSize*0.8);
     cols = Math.floor(window.innerWidth/cellSize*0.8);
 
@@ -39,7 +39,7 @@ function setUpGraphView(gInfo){
     nc.style.gridTemplateColumns = "repeat(" + cols + "," + cellSize + "px)";
     nc.style.gridAutoRows = cellSize + "px";
 
-    //create each cell in the grid
+    //create each cell in the grid 
     for(let i = 0; i < rows; i++){
         for( let j = 0; j < cols; j++ ){
             let cell = document.createElement("div");
@@ -55,7 +55,7 @@ function setUpGraphView(gInfo){
 }
 
 //set up the model of the graph
-function setUpGraph(gInfo){
+function setUpGraphModel(gInfo){
     gInfo.graph = new Array(gInfo.rows);
     for(let i = 0; i < gInfo.rows; i++ ){
         gInfo.graph[i] = new Array(gInfo.cols);
@@ -73,6 +73,7 @@ function setUpHandlers(){
     document.getElementById("reset-button").addEventListener("click", resetOnClick);
 }
 
+//remove handlers except for reset button
 function disableHandlers(){
     document.getElementById("node-select").removeEventListener("change", selectOnChange);
     document.getElementById("alg-select").removeEventListener("change", selectOnChange);
@@ -85,7 +86,7 @@ function disableHandlers(){
     }
 }
 
-//change the color of the cell on Click
+//get the location of the cell and change it's color based on the configuration object
 function cellOnClick(e){
     let cellLoc = e.target.id;
     cellLoc = cellLoc.split("-");
@@ -97,6 +98,7 @@ function cellOnClick(e){
     //console.log(gInfo.endLoc);
 }
 
+//update the configuration object based on the current input
 function selectOnChange(e){
     if(e.target.id == "node-select"){
         settings.nodeType = e.target.options.selectedIndex;
@@ -106,7 +108,8 @@ function selectOnChange(e){
     }
 }
 
-function startOnClick(){
+//start pathfinding and updating cells, disable handlers
+async function startOnClick(){
     if( gInfo.startLoc == 0 || gInfo.endLoc == 0){
         alert("Set up start and end nodes");
     }
@@ -114,18 +117,18 @@ function startOnClick(){
         let result = null;
         switch( settings.algType ){
             case 0:
-                result = aStar(gInfo);
+                result = await aStar(gInfo);
                 console.log("a");
                 break;
-            case 1:
-                result = uCost(gInfo);
-                console.log("u");
+            // case 1:
+            //     result = uCost(gInfo);
+            //     console.log("u");
 
-                break;
-            case 2:
-                result = greedy(gInfo);
-                console.log("g");
-                break;
+            //     break;
+            // case 2:
+            //     result = greedy(gInfo);
+            //     console.log("g");
+            //     break;
         }
         displayPath(result);
         disableHandlers();
@@ -133,10 +136,12 @@ function startOnClick(){
         
 }
 
+//reload the page
 function resetOnClick(){
     window.location.reload();
 }
 
+//update the UI to show the path
 function displayPath(result){
     if( result != undefined){
         while( result.parent != null){
@@ -146,6 +151,7 @@ function displayPath(result){
     }
 }
 
+//change the color and type of cell based on the configuration object
 function pathfindingChangeNode( gInfo, x, y){
     if( settings.nodeType == 0){
         updateStartNode(gInfo, x, y);
@@ -170,7 +176,7 @@ function changeNode(gInfo, x, y, color, nodeType){
     else if( gInfo.graph[x][y] == 0 || gInfo.graph[x][y] == 4 ) {
         cell.style.backgroundColor = color;
         gInfo.graph[x][y] = nodeType+1;
-    }  
+    }
 }
 
 //call this to update the start node with the new x and y location
@@ -188,6 +194,7 @@ function updateStartNode(gInfo, x, y){
     }
 }
 
+//call this to update the end node with the new x and y location
 function updateEndNode(gInfo, x, y){
     if(gInfo.endLoc != 0 && gInfo.graph[x][y] == 0){
         gInfo.graph[gInfo.endLoc[0]][gInfo.endLoc[1]] = 0
@@ -203,12 +210,14 @@ function updateEndNode(gInfo, x, y){
 }
 
 //manhattan distance
+//return: manhattan distance
 function mD( loc1, loc2){
     return Math.abs(loc2[1]-loc1[1]) + Math.abs(loc2[0]-loc1[0]);
 }
 
 
-//create new neighbors
+//retrieve the neighbors of a node
+//return: a list of Node objects
 function getNeighbors(gInfo, r, c, emptyType = 0, endType = 2){
     let validR = [];
     let validC = [];
@@ -244,10 +253,15 @@ function Node(loc){
     this.valid = true;
 }
 
+//check if node 1 and node 2 are in the same location
+//return: boolean
 function locCompare(n1, n2){
     return (n1[0] == n2[0]) && (n1[1] == n2[1]);
 }
 
+
+//remove the smallest node in the list
+//return: a node object that is the min node
 function removeMinNode(list){
     if( list.length == 0 ){
         return null;
@@ -268,8 +282,12 @@ function removeMinNode(list){
     }
 }
 
-//can use heap for the openList to improve time to search for min element
-function aStar(gInfo){
+
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+async function aStar(gInfo){
 
     let closedList = [];
     let openList = [];
@@ -342,7 +360,9 @@ function aStar(gInfo){
                 neighbors[i].h = nHCost;
                 neighbors[i].parent = current;
                 openList.push(neighbors[i]);
-                changeNode(gInfo, neighbors[i].loc[0], neighbors[i].loc[1], "yellow", 3);
+                await sleep(20);
+                changeNode(gInfo, neighbors[i].loc[0], neighbors[i].loc[1], "yellow", 3)
+    
             }
         }
     }

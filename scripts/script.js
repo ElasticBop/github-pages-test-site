@@ -6,7 +6,12 @@ var projects = [{
     description : "Visualization of the A-star pathfinding algorithm using the manhattan distance as a metric. Built using HTML, CSS, and Javascript",
     link : "https://elasticbop.github.io/projects/Pathfinding/index.html",
     img : "./images/pathfinding.PNG"        
-},];
+}, {
+    description : "A web app allowing users to take note of information about specific matchups in the game League of Legends. Built using the MERN stack and deployed on Heroku.",
+    link : "https://lol-matchup-notes.herokuapp.com/",
+    img : "./images/lolmatchupnotes.PNG"        
+}
+];
 
 //create elements using project data and add to DOM
 function addProject(project) {

@@ -8,13 +8,18 @@
 	100% {opacity:100%;}
 }
 
+* {
+	box-sizing: border-box;
+	margin: 0;
+
+}
 
 #loading-screen {
 	position: absolute;
 	background-color: white;
 	z-index: 2;
-	width: 100%;
-	height:100%;
+	width: 100vw;
+	height:100vh;
 	display:block;
 }
 
@@ -30,50 +35,6 @@
 
 body {
     background-color: #F4F4F4;
-	margin: 0;
-}
-
-.nav-bar {
-	position:fixed;
-	width: 100%; 
-	background-color: white;
-	padding: 8px;
-	border-bottom: 2px solid #111; /* line on bottom of navbar */
-	z-index: 1; /* position of elements on z axis*/
-	opacity: 50%;
-}
-
-.nav-bar:hover{
-	opacity: 80%;
-}
-
-/* nav bar flexbox container */
-.nav-bar-flex {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
-}
-
-/* items in the navbar flex box */
-.nav-bar a{
-	padding: 0.33em 1.33em;
-	margin: 0.33em 0.66em;
-	border: 0.134em solid black;
-	border-radius: 1em;
-
-	color: #111;
-    font-family: monospace;
-    font-size: 15px;
-	text-transform: uppercase;
-    text-decoration: none;
-}
-
-
-.nav-bar a:hover{
-    background-color: #F1F1F1;
-	border: 0.134em solid #7A00DF;
-	color: #7A00DF;
 }
 
 .welcome {
@@ -84,8 +45,8 @@ body {
 
 .background-image{
 	position: relative;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	object-fit: cover;
 }
 
@@ -109,7 +70,7 @@ body {
 	font-family: monospace;
 	margin: 0px 30px;
 	width: 350px;
-	text-align: left;
+	text-align: center;
 	color: #ECECEC ;
 }
 
@@ -170,6 +131,7 @@ body {
 	flex-wrap: wrap;
 	flex-direction: row;
 	justify-content: center;
+	align-items:center;
 }
 
 
@@ -177,7 +139,7 @@ body {
 	opacity: 0%;
 }
 
-.projects-entry figure{
+.projects-entry{
 	position:relative;
 	margin: 50px 100px;
 	width: 300px;
@@ -186,6 +148,10 @@ body {
 	border: 3px solid #DDDDDD ;
 	border-radius: 15px;
 	*/
+}
+
+figure {
+	position: relative;
 }
 
 .projects-entry img{
@@ -200,7 +166,7 @@ body {
 	position: absolute;
 	background-color: white;
 	width:100%;
-	height:50%;
+	height:100%;
 	top: 0%;
 	left: 0%;
 	
@@ -219,7 +185,7 @@ body {
 }
 
 .projects-entry-image-cover:hover {
-	opacity: 50%;
+	opacity: 70%;
 	transition: 0.5s;
 }
 

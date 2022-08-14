@@ -1,9 +1,9 @@
 var projects = [{
-    description : "Portfolio to store  my current and future projects. Built using HTML, CSS, and Javascript.",
-    link : "https://github.com/elasticbop",
-    img : "./images/project1.jpg"
+    description : "Responsive portfolio to store  my current and future projects. Built using HTML, CSS, and Javascript.",
+    link : "https://elasticbop.github.io/",
+    img : "./images/portfolio.PNG"
 }, {
-    description : "Visualization of the A-star pathfinding algorithm using the manhattan distance as a metric. Built using HTML, CSS, and Javascript",
+    description : "Responsive visualization of the A-star pathfinding algorithm using the manhattan distance as a metric. Built using HTML, CSS, and Javascript",
     link : "https://elasticbop.github.io/projects/Pathfinding/index.html",
     img : "./images/pathfinding.PNG"        
 }, {
